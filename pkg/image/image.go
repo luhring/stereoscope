@@ -20,6 +20,8 @@ import (
 type Image struct {
 	// image is the raw image metadata and content provider from the GCR lib
 	image v1.Image
+	// ref is the raw image reference that captures how to refer to this image
+	ref name.Reference
 	// contentCacheDir is where all layer tar cache is stored.
 	contentCacheDir string
 	// Metadata contains select image attributes
@@ -84,14 +86,20 @@ func WithRepoDigests(digests []string) AdditionalMetadata {
 }
 
 // NewImage provides a new, unread image object.
-func NewImage(image v1.Image, contentCacheDir string, additionalMetadata ...AdditionalMetadata) *Image {
+func NewImage(image v1.Image, ref name.Reference, contentCacheDir string,
+	additionalMetadata ...AdditionalMetadata) *Image {
 	imgObj := &Image{
 		image:            image,
+		ref:              ref,
 		contentCacheDir:  contentCacheDir,
 		FileCatalog:      NewFileCatalog(),
 		overrideMetadata: additionalMetadata,
 	}
 	return imgObj
+}
+
+func (i Image) Ref() name.Reference {
+	return i.ref
 }
 
 func (i *Image) IDs() []string {

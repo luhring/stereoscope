@@ -65,5 +65,6 @@ func (p *DirectoryImageProvider) Provide() (*image.Image, error) {
 		return nil, err
 	}
 
-	return image.NewImage(img, contentTempDir, metadata...), nil
+	// TODO: should image ref be non-nil?
+	return image.NewImage(img, nil, contentTempDir, metadata...), nil
 }

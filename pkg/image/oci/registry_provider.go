@@ -66,7 +66,7 @@ func (p *RegistryImageProvider) Provide() (*image.Image, error) {
 		metadata = append(metadata, image.WithManifest(manifestBytes))
 	}
 
-	return image.NewImage(img, imageTempDir, metadata...), nil
+	return image.NewImage(img, ref, imageTempDir, metadata...), nil
 }
 
 func prepareReferenceOptions(registryOptions *image.RegistryOptions) []name.Option {
